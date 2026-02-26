@@ -17,7 +17,7 @@ jobs:
           channel: 'stable'
 
       - name: Build Web
-        # Hier führen wir den Build direkt im Hauptordner aus
+        # Da die pubspec.yaml jetzt direkt hier liegt, brauchen wir kein 'working-directory' mehr
         run: flutter build web --release --base-href "/${{ github.event.repository.name }}/"
 
       - name: Upload artifact
