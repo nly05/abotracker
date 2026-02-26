@@ -19,13 +19,13 @@ jobs:
       - name: Build Web
         # Wir springen in den Ordner 'sub', um den Build zu starten
         run: flutter build web --release --base-href "/${{ github.event.repository.name }}/"
-        working-directory: ./sub
+        working-directory: ./Sub
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           # Hier sagen wir GitHub, wo die fertigen Dateien liegen
-          path: sub/build/web
+          path: Sub/build/web
 
   deploy:
     needs: build
