@@ -11,21 +11,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Ordnerstruktur anzeigen (Debug)
+        run: ls -R  # Dieser Befehl listet uns alle Dateien und Ordner auf! 📋
+
       - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
 
       - name: Build Web
-        # Wir nutzen hier den direkten Pfad ohne das "./" am Anfang, falls das Probleme macht
-        run: flutter build web --release --base-href "/${{ github.event.repository.name }}/"
-        working-directory: sub
+        # Wir versuchen es jetzt OHNE 'working-directory', falls die Datei doch woanders liegt
+        run: |
+          cd sub && flutter build web --release --base-href "/${{ github.event.repository.name }}/" || \
+          flutter build web --release --base-href "/${{ github.event.repository.name }}/"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Der Pfad zum fertigen Build-Ordner
-          path: sub/build/web
+          # Wir suchen den Build-Ordner, egal ob er in 'sub' oder im Hauptordner liegt
+          path: "**/build/web"
 
   deploy:
     needs: build
