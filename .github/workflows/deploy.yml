@@ -2,7 +2,7 @@ name: Deploy Flutter Web
 on:
   push:
     branches:
-      - main  # Dein Haupt-Branch heißt laut Screenshot "main"
+      - main
 
 jobs:
   build:
@@ -17,12 +17,15 @@ jobs:
           channel: 'stable'
 
       - name: Build Web
+        # WICHTIG: Ersetze 'DEIN_ORDNER_NAME' durch den Namen deines Unterordners (evtl. abotracker)
         run: flutter build web --release --base-href "/${{ github.event.repository.name }}/"
+        working-directory: ./DEIN_ORDNER_NAME 
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: build/web
+          # Hier auch den Pfad anpassen
+          path: DEIN_ORDNER_NAME/build/web
 
   deploy:
     needs: build
