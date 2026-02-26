@@ -17,14 +17,14 @@ jobs:
           channel: 'stable'
 
       - name: Build Web
-        # Wir springen in den Ordner 'sub', um den Build zu starten
+        # Wir nutzen hier den direkten Pfad ohne das "./" am Anfang, falls das Probleme macht
         run: flutter build web --release --base-href "/${{ github.event.repository.name }}/"
-        working-directory: ./sub
+        working-directory: sub
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Hier sagen wir GitHub, wo die fertigen Dateien liegen
+          # Der Pfad zum fertigen Build-Ordner
           path: sub/build/web
 
   deploy:
@@ -34,7 +34,6 @@ jobs:
       id-token: write
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to GitHub Pages
